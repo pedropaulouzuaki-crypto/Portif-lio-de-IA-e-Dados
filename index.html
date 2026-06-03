@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paulo Navegantes · Dados &amp; IA · Portfólio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,900&family=Archivo:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0B0A; --bg-elev:#101210; --ink:#ECEAE0; --ink-dim:#B4B5AC;
+    --muted:#7E817A; --line:#262824; --line-soft:#1b1d1a;
+    --accent:#C9F24E; --accent-dim:#8aa83a; --gold:#E7B84A; --cyan:#5BE6C8;
+    --maxw:1140px; --ease:cubic-bezier(.2,.7,.2,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:'Archivo',sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden;position:relative}
+
+  /* ---- SCROLL PROGRESS ---- */
+  .progress{position:fixed;top:0;left:0;height:3px;width:0;z-index:120;
+    background:linear-gradient(90deg,var(--accent),var(--cyan));box-shadow:0 0 14px rgba(201,242,78,.5);transition:width .12s linear}
+
+  /* ---- ANIMATED ATMOSPHERE ---- */
+  .bg-fx{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+  .grid-fx{position:absolute;inset:-2px;
+    background-image:linear-gradient(var(--line-soft) 1px,transparent 1px),linear-gradient(90deg,var(--line-soft) 1px,transparent 1px);
+    background-size:64px 64px;
+    -webkit-mask-image:radial-gradient(ellipse 90% 70% at 50% 10%,#000 25%,transparent 80%);
+            mask-image:radial-gradient(ellipse 90% 70% at 50% 10%,#000 25%,transparent 80%);
+    opacity:.5;animation:gridDrift 60s linear infinite}
+  @keyframes gridDrift{from{background-position:0 0}to{background-position:64px 64px}}
+  .orb{position:absolute;border-radius:50%;filter:blur(60px);opacity:.5;mix-blend-mode:screen}
+  .orb.a{width:540px;height:540px;background:radial-gradient(circle,rgba(201,242,78,.22),transparent 65%);top:-160px;left:-120px;animation:float1 26s ease-in-out infinite}
+  .orb.b{width:460px;height:460px;background:radial-gradient(circle,rgba(78,242,180,.14),transparent 65%);top:38%;right:-160px;animation:float2 32s ease-in-out infinite}
+  .orb.c{width:420px;height:420px;background:radial-gradient(circle,rgba(231,184,74,.10),transparent 65%);bottom:-140px;left:30%;animation:float3 38s ease-in-out infinite}
+  @keyframes float1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(80px,60px) scale(1.12)}}
+  @keyframes float2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-70px,-50px) scale(1.08)}}
+  @keyframes float3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(40px,-70px) scale(1.15)}}
+  .grain{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.045;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;position:relative;z-index:2}
+  .mono{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+  .rs{color:var(--gold);font-family:'Fraunces',serif;font-weight:600}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:60;backdrop-filter:blur(12px);background:rgba(10,11,10,.72);border-bottom:1px solid var(--line)}
+  .nav-in{max-width:var(--maxw);margin:0 auto;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .brand{display:flex;align-items:center;gap:12px;font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem}
+  .brand .mk{width:30px;height:30px;border:1px solid var(--accent);border-radius:50%;display:grid;place-items:center;color:var(--accent);font-family:'Space Mono',monospace;font-size:.8rem}
+  .nav-links{display:flex;gap:24px}
+  .nav-links a{color:var(--ink-dim);text-decoration:none;font-size:.82rem;letter-spacing:.04em;transition:color .25s}
+  .nav-links a:hover{color:var(--accent)}
+  .status{display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ink-dim);letter-spacing:.08em}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(201,242,78,.45)}70%{box-shadow:0 0 0 8px rgba(201,242,78,0)}100%{box-shadow:0 0 0 0 rgba(201,242,78,0)}}
+  @media(max-width:820px){.nav-links{display:none}}
+
+  /* HERO */
+  header{position:relative;padding:84px 0 64px;overflow:hidden}
+  .scan{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,242,78,.6),transparent);opacity:.5;animation:scan 7s linear infinite;z-index:1;pointer-events:none}
+  @keyframes scan{0%{top:0;opacity:0}10%{opacity:.5}90%{opacity:.5}100%{top:100%;opacity:0}}
+
+  /* REVEAL (directional) */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+  .reveal.in{opacity:1;transform:none}
+  .reveal.l{transform:translateX(-40px)}
+  .reveal.r{transform:translateX(40px)}
+  .reveal.s{transform:scale(.94)}
+  .reveal.l.in,.reveal.r.in,.reveal.s.in{transform:none}
+
+  .hero-kicker{display:inline-flex;align-items:center;gap:10px;border:1px solid var(--line);border-radius:100px;padding:7px 16px;margin-bottom:30px}
+  .hero-kicker .mono{color:var(--accent)}
+  h1.name{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(3.2rem,11vw,8.2rem);line-height:.9;letter-spacing:-.02em}
+  h1.name .l2{display:block}
+  .role-line{font-family:'Fraunces',serif;font-style:italic;font-weight:300;font-size:clamp(1.3rem,3.4vw,2.2rem);color:var(--accent);margin-top:16px}
+  .manifesto{max-width:680px;margin-top:26px;color:var(--ink-dim);font-size:1.08rem}
+  .manifesto b{color:var(--ink);font-weight:600}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:34px}
+  .chip{font-family:'Space Mono',monospace;font-size:.74rem;letter-spacing:.06em;color:var(--ink-dim);border:1px solid var(--line);border-radius:8px;padding:9px 14px;background:rgba(255,255,255,.012)}
+  .chip b{color:var(--accent);font-weight:700}
+  .hero-cta{display:flex;gap:12px;margin-top:34px;flex-wrap:wrap}
+
+  /* SECTIONS */
+  section{padding:80px 0;position:relative;z-index:2}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:44px;flex-wrap:wrap}
+  .sec-num{font-family:'Space Mono',monospace;color:var(--accent);font-size:.8rem;letter-spacing:.1em}
+  .sec-title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.8rem,4vw,2.9rem);line-height:1.05}
+  .sec-sub{color:var(--muted);font-size:.95rem;max-width:520px;margin-left:auto}
+  @media(max-width:820px){.sec-sub{margin-left:0;flex-basis:100%}}
+
+  /* DIVIDER BARS (structural theme separators) */
+  .divider{position:relative;z-index:2;max-width:var(--maxw);margin:0 auto;padding:0 28px}
+  .divider .bar{display:flex;align-items:center;gap:20px;padding:22px 0;border-top:1px solid var(--line)}
+  .divider .dv-num{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.2em;color:var(--accent);white-space:nowrap}
+  .divider .dv-label{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-dim);white-space:nowrap}
+  .divider .dv-line{flex:1;height:1px;background:linear-gradient(90deg,var(--accent-dim),transparent);transform:scaleX(0);transform-origin:left;transition:transform 1.1s var(--ease)}
+  .divider.in .dv-line{transform:scaleX(1)}
+  .divider .dv-tick{width:7px;height:7px;border-radius:50%;border:1px solid var(--accent-dim);flex-shrink:0}
+
+  .band{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(201,242,78,.02),transparent)}
+  .thesis-big{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(1.9rem,4.6vw,3.5rem);line-height:1.12;max-width:900px}
+  .thesis-big .hl{color:var(--accent);font-style:italic}
+  .thesis-sub{margin-top:28px;color:var(--ink-dim);max-width:720px;font-size:1.08rem}
+
+  /* PULL QUOTE */
+  .pull{padding:90px 0;text-align:center;position:relative;z-index:2}
+  .pull .q{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(2.2rem,6vw,4.4rem);line-height:1.04;letter-spacing:-.02em}
+  .pull .q .u{position:relative;color:var(--accent)}
+  .pull .q .u::after{content:"";position:absolute;left:0;bottom:.08em;height:.09em;width:100%;background:var(--accent);transform:scaleX(0);transform-origin:left;animation:uline 1.1s var(--ease) forwards}
+  .pull.in .q .u::after{transform:scaleX(1)}
+  .pull .qs{margin-top:22px;color:var(--muted);font-size:1rem;max-width:560px;margin-left:auto;margin-right:auto}
+
+  /* IMPACT */
+  .impact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+  .stat{background:var(--bg);padding:30px 24px;transition:background .4s,transform .4s;position:relative;cursor:help}
+  .stat:hover{background:var(--bg-elev);transform:translateY(-3px)}
+  .stat .val{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(2.1rem,4.6vw,3.2rem);line-height:1;letter-spacing:-.02em}
+  .stat .val.money{color:var(--gold)}
+  .stat .lab{margin-top:13px;color:var(--ink-dim);font-size:.9rem;line-height:1.4}
+  .stat .src{position:absolute;top:14px;right:16px;font-family:'Space Mono',monospace;font-size:.62rem;color:var(--muted);opacity:.6}
+
+  /* tooltip */
+  [data-tip]{position:relative}
+  [data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;bottom:calc(100% + 10px);transform:translateX(-50%);
+    background:#171915;border:1px solid var(--accent-dim);color:var(--ink);
+    font-family:'Archivo',sans-serif;font-size:.78rem;line-height:1.4;letter-spacing:0;text-transform:none;
+    width:max-content;max-width:280px;padding:10px 13px;border-radius:8px;z-index:40;
+    box-shadow:0 16px 40px rgba(0,0,0,.5);pointer-events:none;opacity:0;animation:tipIn .25s var(--ease) forwards}
+  @keyframes tipIn{from{opacity:0;transform:translate(-50%,6px)}to{opacity:1;transform:translate(-50%,0)}}
+
+  /* ===== FRENTES (image-driven showcase) ===== */
+  .frentes{display:flex;flex-direction:column;gap:26px}
+  .frente{position:relative;border:1px solid var(--line);border-radius:16px;overflow:hidden;min-height:380px;display:flex;align-items:flex-end;
+    isolation:isolate;transition:border-color .5s,transform .5s var(--ease)}
+  .frente:hover{border-color:var(--accent-dim);transform:translateY(-4px)}
+  .frente .ph{position:absolute;inset:0;z-index:-2;overflow:hidden}
+  .frente .ph img{width:100%;height:120%;object-fit:cover;object-position:center;opacity:.42;transform:translateY(-6%);
+    transition:opacity .6s,transform 1.2s var(--ease);will-change:transform}
+  .frente:hover .ph img{opacity:.55;transform:translateY(-6%) scale(1.05)}
+  .frente .veil{position:absolute;inset:0;z-index:-1;
+    background:linear-gradient(90deg,rgba(8,9,8,.96) 0%,rgba(8,9,8,.84) 38%,rgba(8,9,8,.45) 100%),
+               linear-gradient(0deg,rgba(8,9,8,.9),transparent 70%)}
+  .frente .fc{padding:38px 40px;max-width:760px;position:relative}
+  .frente .fk{display:inline-flex;align-items:center;gap:10px;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+  .frente .fk::before{content:"";width:26px;height:2px;background:var(--accent)}
+  .frente .ft{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.7rem,3.6vw,2.7rem);line-height:1.05}
+  .frente .fsub{font-family:'Fraunces',serif;font-style:italic;font-weight:300;color:var(--cyan);font-size:clamp(1.05rem,2vw,1.4rem);margin-top:8px}
+  .frente .fdesc{color:var(--ink-dim);font-size:1.02rem;margin-top:16px;max-width:620px}
+  .frente .fdesc b{color:var(--ink);font-weight:600}
+  .frente .fproof{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .frente .fproof span{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.04em;color:var(--ink);
+    border:1px solid var(--accent-dim);border-radius:7px;padding:7px 12px;background:rgba(201,242,78,.06)}
+  .frente .fproject{margin-top:20px;padding:14px 16px;border-left:2px solid var(--cyan);background:rgba(91,230,200,.05);border-radius:0 8px 8px 0;max-width:600px}
+  .frente .fproject .pj-tag{font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan)}
+  .frente .fproject .pj-txt{color:var(--ink-dim);font-size:.92rem;margin-top:5px}
+  .frente .fproject .pj-txt b{color:var(--ink)}
+  @media(max-width:680px){
+    .frente{min-height:auto}
+    .frente .fc{padding:28px 22px}
+    .frente .veil{background:linear-gradient(0deg,rgba(8,9,8,.96) 10%,rgba(8,9,8,.7) 100%)}
+  }
+
+  /* ROLE MAP (competências aplicadas) */
+  .map-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  .mcard{border:1px solid var(--line);border-radius:10px;padding:24px;background:linear-gradient(180deg,rgba(255,255,255,.01),transparent);transition:transform .4s var(--ease),border-color .4s}
+  .mcard:hover{transform:translateY(-4px);border-color:var(--accent-dim)}
+  .mcard .req{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.08em;color:var(--accent);text-transform:uppercase;margin-bottom:12px;display:block}
+  .mcard .proof{color:var(--ink-dim);font-size:.95rem}
+  .mcard .proof b{color:var(--ink)}
+  @media(max-width:760px){.map-grid{grid-template-columns:1fr}}
+
+  /* TIMELINE */
+  .tl{position:relative;margin-left:8px;border-left:1px solid var(--line)}
+  .tl-item{position:relative;padding:0 0 40px 34px}
+  .tl-item:last-child{padding-bottom:0}
+  .tl-item::before{content:"";position:absolute;left:-5px;top:7px;width:9px;height:9px;border-radius:50%;background:var(--bg);border:1px solid var(--muted);transition:.4s;z-index:2}
+  .tl-item:hover::before,.tl-item.open::before{background:var(--accent);border-color:var(--accent);box-shadow:0 0 14px rgba(201,242,78,.5)}
+  .tl-card{cursor:pointer;border:1px solid transparent;border-radius:12px;margin-left:-14px;padding:14px;transition:border-color .35s,background .35s}
+  .tl-item:hover .tl-card,.tl-item.open .tl-card{border-color:var(--line);background:rgba(255,255,255,.014)}
+  .tl-when{font-family:'Space Mono',monospace;font-size:.74rem;letter-spacing:.06em;color:var(--accent)}
+  .tl-org{font-family:'Fraunces',serif;font-weight:600;font-size:1.28rem;margin:4px 0 2px}
+  .tl-role{color:var(--muted);font-size:.86rem;margin-bottom:10px}
+  .tl-desc{color:var(--ink-dim);font-size:.95rem;max-width:720px}
+  .tl-hint{display:inline-flex;align-items:center;gap:7px;margin-top:12px;font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);transition:color .3s}
+  .tl-item:hover .tl-hint,.tl-item.open .tl-hint{color:var(--accent)}
+  .tl-hint .ic{display:inline-block;transition:transform .4s var(--ease)}
+  .tl-item.open .tl-hint .ic{transform:rotate(90deg)}
+  /* inline full LinkedIn text - reveals on hover (desktop) / tap (mobile) */
+  .tl-full{max-height:0;overflow:hidden;opacity:0;transition:max-height .6s var(--ease),opacity .5s,margin .5s}
+  .tl-item:hover .tl-full,.tl-item.open .tl-full{max-height:1400px;opacity:1;margin-top:16px}
+  .tl-full .ff-head{font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.14em;text-transform:uppercase;color:var(--cyan);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .tl-full .ff-head::before{content:"";width:18px;height:1px;background:var(--cyan)}
+  .tl-full .ff-body{border-left:1px solid var(--line);padding-left:18px}
+  .tl-full ul{list-style:none;margin:0 0 12px}
+  .tl-full li{position:relative;padding:6px 0 6px 18px;color:var(--ink-dim);font-size:.9rem;line-height:1.5}
+  .tl-full li::before{content:"–";position:absolute;left:0;color:var(--accent-dim)}
+  .tl-full li b{color:var(--ink)}
+  .tl-full .res{margin-top:10px;padding-top:12px;border-top:1px solid var(--line-soft)}
+  .tl-full .res .rh{font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:8px}
+  .tl-full .res li::before{content:"\2605";color:var(--gold);font-size:.7rem}
+  .tl-more{margin-top:14px;display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid var(--line);color:var(--ink-dim);
+    font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;padding:8px 14px;border-radius:7px;cursor:pointer;transition:.3s}
+  .tl-more:hover{border-color:var(--accent);color:var(--accent);box-shadow:0 0 16px rgba(201,242,78,.15)}
+  .tl-more .pl{color:var(--accent);font-weight:700}
+
+  /* ARSENAL */
+  .ars-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  .ars{background:var(--bg);padding:26px;transition:background .4s}
+  .ars:hover{background:var(--bg-elev)}
+  .ars h4{font-family:'Space Mono',monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;font-weight:700}
+  .tags{display:flex;flex-wrap:wrap;gap:8px}
+  .tag{font-size:.82rem;color:var(--ink-dim);border:1px solid var(--line);border-radius:6px;padding:6px 11px;transition:.3s}
+  .tag:hover{border-color:var(--accent-dim);color:var(--ink)}
+  @media(max-width:680px){.ars-grid{grid-template-columns:1fr}}
+
+  /* EDU */
+  .edu-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+  .edu-grid h4{font-family:'Space Mono',monospace;font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+  .edu-item{padding:14px 0;border-bottom:1px solid var(--line-soft)}
+  .edu-item .t{color:var(--ink);font-weight:600;font-size:.98rem}
+  .edu-item .s{color:var(--muted);font-size:.83rem;font-family:'Space Mono',monospace;letter-spacing:.03em}
+  @media(max-width:680px){.edu-grid{grid-template-columns:1fr;gap:32px}}
+
+  /* CLOSING */
+  .closing{text-align:center;padding:120px 0 60px;border-top:1px solid var(--line);background:linear-gradient(180deg,transparent,rgba(201,242,78,.03))}
+  .close-big{font-family:'Fraunces',serif;font-weight:400;font-size:clamp(2rem,5.5vw,4rem);line-height:1.08;max-width:880px;margin:0 auto}
+  .close-big .hl{color:var(--accent);font-style:italic}
+  .cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:46px}
+  .btn{display:inline-flex;align-items:center;gap:10px;text-decoration:none;font-size:.9rem;letter-spacing:.02em;padding:14px 24px;border-radius:10px;transition:.3s var(--ease);cursor:pointer;border:none;font-family:'Archivo',sans-serif}
+  .btn.primary{background:var(--accent);color:#0A0B0A;font-weight:700}
+  .btn.primary:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(201,242,78,.25)}
+  .btn.ghost{border:1px solid var(--line);color:var(--ink-dim);background:transparent}
+  .btn.ghost:hover{border-color:var(--accent-dim);color:var(--ink)}
+  footer{text-align:center;padding:26px;color:var(--muted);font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.1em;position:relative;z-index:2;display:flex;gap:18px;justify-content:center;align-items:center;flex-wrap:wrap}
+  .lk{color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer;background:none;border:none;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.1em}
+  .lk:hover{color:var(--accent)}
+
+  /* MODAL */
+  .ov{position:fixed;inset:0;z-index:100;background:rgba(6,7,6,.72);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:24px;opacity:0;transition:opacity .3s}
+  .ov.open{display:flex;opacity:1}
+  .modal{background:linear-gradient(180deg,#141613,#0e100e);border:1px solid var(--accent-dim);border-radius:16px;max-width:660px;width:100%;max-height:84vh;overflow:auto;padding:34px;position:relative;transform:translateY(20px) scale(.98);transition:transform .35s var(--ease);box-shadow:0 40px 100px rgba(0,0,0,.6)}
+  .ov.open .modal{transform:none}
+  .modal .x{position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink-dim);cursor:pointer;font-size:1.1rem;transition:.3s}
+  .modal .x:hover{border-color:var(--accent);color:var(--accent)}
+  .modal .m-tag{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+  .modal h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.7rem;line-height:1.15;margin:10px 0 18px}
+  .modal .m-sub{color:var(--muted);font-size:.86rem;margin:-10px 0 16px;font-family:'Space Mono',monospace;letter-spacing:.03em}
+  .modal ul{list-style:none;margin:0 0 8px}
+  .modal li{position:relative;padding:9px 0 9px 22px;color:var(--ink-dim);font-size:.96rem;border-bottom:1px solid var(--line-soft)}
+  .modal li::before{content:"\25B8";position:absolute;left:0;top:9px;color:var(--accent)}
+  .modal li b{color:var(--ink)}
+  .modal .areas{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 6px}
+  .modal .areas span{font-size:.8rem;border:1px solid var(--accent-dim);color:var(--accent);border-radius:6px;padding:6px 11px}
+  .modal .m-stack{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 4px}
+  .modal .m-stack span{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--ink-dim);border:1px solid var(--line);border-radius:6px;padding:6px 10px}
+  .modal .m-sec{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--cyan);margin:20px 0 8px}
+  .modal .disc{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.04em;color:var(--muted);line-height:1.6}
+  .modal p{color:var(--ink-dim);font-size:.96rem;margin-bottom:10px}
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="bg-fx"><div class="grid-fx"></div><div class="orb a"></div><div class="orb b"></div><div class="orb c"></div></div>
+<div class="grain"></div>
+
+<nav>
+  <div class="nav-in">
+    <div class="brand"><span class="mk">PN</span> Paulo Navegantes</div>
+    <div class="nav-links">
+      <a href="#tese">Tese</a><a href="#impacto">Impacto</a><a href="#frentes">Frentes</a>
+      <a href="#vaga">Competências</a><a href="#trajetoria">Trajetória</a><a href="#contato">Contato</a>
+    </div>
+    <div class="status"><span class="dot"></span> SP · DISPONÍVEL</div>
+  </div>
+</nav>
+
+<header>
+  <div class="scan"></div>
+  <div class="wrap">
+    <div class="hero-kicker reveal"><span class="dot"></span><span class="mono">Gestão em Dados, IA &amp; Governança Tecnológica</span></div>
+    <h1 class="name reveal">Paulo<span class="l2">Navegantes</span></h1>
+    <div class="role-line reveal">Quem constrói a IA, defende o controle e entrega o valor.</div>
+    <p class="manifesto reveal">Líder na convergência entre <b>tecnologia avançada, dados e governança</b>. Quase uma década no coração do sistema financeiro — <b>PwC, B3, Edenred e Banco Daycoval</b> — estruturando áreas de Data Analytics, IA, RPA e Inteligência Estratégica <b>do zero</b> e liderando modelos em produção. Não gerencio inteligência de longe. Eu a construo.</p>
+    <div class="chips reveal">
+      <div class="chip"><b>≈9 anos</b> em Dados &amp; IA</div>
+      <div class="chip">Serviços financeiros · <b>Banco · B3 · PwC</b></div>
+      <div class="chip"><b>~R$ 40 bi/ano</b> apurados via automação</div>
+      <div class="chip">IA generativa · LLMs · <b>modelos locais &amp; preditivos</b></div>
+    </div>
+    <div class="hero-cta reveal">
+      <a class="btn primary" href="#contato">Conversar comigo →</a>
+      <a class="btn ghost" href="#frentes">Ver frentes de atuação</a>
+    </div>
+  </div>
+</header>
+
+<section id="tese" class="band">
+  <div class="wrap">
+    <p class="thesis-big reveal">Quem vai liderar a IA precisa <span class="hl">saber construí-la.</span></p>
+    <p class="thesis-sub reveal">Liderar Dados &amp; IA generativa não é aprovar slide e orçamento. É ter desenhado o modelo, defendido a governança e traduzido tudo em resultado financeiro. Eu fiz as três coisas — dentro de um banco, sob regulação, com o dado sustentando a operação.</p>
+  </div>
+</section>
+
+<div class="divider reveal"><div class="bar"><span class="dv-tick"></span><span class="dv-num">01</span><span class="dv-label">Impacto</span><span class="dv-line"></span></div></div>
+
+<section id="impacto">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">01</span><span class="sec-title">Impacto que não é promessa</span>
+      <span class="sec-sub">Passe o mouse em cada número para ver a origem. Tudo real — resultados de trabalhos que conduzi.</span>
+    </div>
+    <div class="impact-grid reveal">
+      <div class="stat" data-tip="Audit Machine (Auditoria Contínua) na Edenred — saving em faturamento."><span class="src">EDENRED</span><div class="val money"><span class="count" data-target="8.1" data-dec="1" data-prefix="R$ " data-suffix="M">R$ 0M</span></div><div class="lab">de saving gerado com a Auditoria Contínua que criei</div></div>
+      <div class="stat" data-tip="Automações financeiras na Quality S.A. que validaram 100% das transações analisadas."><span class="src">QUALITY</span><div class="val money"><span class="count" data-target="40" data-prefix="R$ " data-suffix=" bi">R$ 0 bi</span></div><div class="lab">em volume financeiro apurado por ano via automação</div></div>
+      <div class="stat" data-tip="Data Lake analítico do Banco Daycoval, com +100 bases consolidadas."><span class="src">DAYCOVAL</span><div class="val"><span class="count" data-target="100" data-prefix="+">+0</span></div><div class="lab">bancos de dados consolidados no Data Lake que estruturei</div></div>
+      <div class="stat" data-tip="Projetos de dados, IA e automação entregues no período no Banco Daycoval."><span class="src">DAYCOVAL</span><div class="val"><span class="count" data-target="70" data-prefix="+">+0</span></div><div class="lab">projetos de dados, IA e RPA entregues</div></div>
+      <div class="stat" data-tip="Áreas de negócio instrumentalizadas com infraestrutura de dados e indicadores."><span class="src">DAYCOVAL</span><div class="val"><span class="count" data-target="7">0</span></div><div class="lab">áreas de negócio instrumentalizadas de ponta a ponta</div></div>
+      <div class="stat" data-tip="Distorções financeiras identificadas pela iniciativa de inteligência de dados na B3."><span class="src">B3</span><div class="val money"><span class="count" data-target="2" data-prefix="+R$ " data-suffix="M">+R$ 0M</span></div><div class="lab">em distorções financeiras identificadas</div></div>
+      <div class="stat" data-tip="Robôs (RPA) que uniram sistemas antes isolados em um único fluxo automatizado."><span class="src">DAYCOVAL</span><div class="val"><span class="count" data-target="6" data-prefix="+">+0</span></div><div class="lab">sistemas isolados unidos em um só fluxo de RPA</div></div>
+      <div class="stat" data-tip="Profissionais mentorados em dados, IA, automação, storytelling e pensamento analítico."><span class="src">CARREIRA</span><div class="val"><span class="count" data-target="10" data-prefix="+">+0</span></div><div class="lab">profissionais mentorados e desenvolvidos</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="pull reveal">
+  <div class="wrap">
+    <p class="q">Sei arquitetar <span class="u">porque sei fazer.</span></p>
+    <p class="qs">Hands-on do prompt à infraestrutura. Lidero o que eu mesmo sou capaz de construir.</p>
+  </div>
+</div>
+
+<div class="divider reveal"><div class="bar"><span class="dv-tick"></span><span class="dv-num">02</span><span class="dv-label">Frentes de atuação</span><span class="dv-line"></span></div></div>
+
+<section id="frentes">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">02</span><span class="sec-title">Frentes de atuação</span>
+      <span class="sec-sub">As cinco verticais que estruturo e lidero — cada uma com prova real e um projeto em destaque.</span>
+    </div>
+    <div class="frentes">
+
+      <div class="frente reveal s">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&amp;fit=crop&amp;q=80&amp;w=1600" alt="" loading="lazy"></div>
+        <div class="veil"></div>
+        <div class="fc">
+          <span class="fk">Frente 01</span>
+          <h3 class="ft">Inteligência de Dados &amp; Infraestrutura</h3>
+          <p class="fsub">O cérebro da operação.</p>
+          <p class="fdesc">Arquitetura de dados resiliente do zero: estruturei o <b>primeiro Data Lake analítico</b> do Banco Daycoval, consolidando <b>+100 bases</b> e milhares de tabelas categorizadas por produto, operação e finalidade — com pipelines versionados, padronizados e prontos para auditorias internas e externas.</p>
+          <div class="fproof"><span>+100 bases consolidadas</span><span>Data Lake transversal</span><span>Pipelines versionados</span></div>
+          <div class="fproject"><span class="pj-tag">Projeto em destaque</span><p class="pj-txt"><b>Data Lake analítico transversal</b> — visão única por produto, base de decisão para a superintendência e áreas de risco/compliance.</p></div>
+        </div>
+      </div>
+
+      <div class="frente reveal s">
+        <div class="ph"><img src="https://plus.unsplash.com/premium_photo-1681487767138-ddf2d67b35c1?auto=format&amp;fit=crop&amp;q=80&amp;w=1600" alt="" loading="lazy"></div>
+        <div class="veil"></div>
+        <div class="fc">
+          <span class="fk">Frente 02</span>
+          <h3 class="ft">MIS, Painéis &amp; Reports</h3>
+          <p class="fsub">Decisão baseada em fatos.</p>
+          <p class="fdesc">Transformo terabytes em decisão: desenvolvi <b>KPIs estratégicos e painéis executivos em Tableau</b> adotados pela superintendência e pelas áreas de risco e compliance como base de decisão, com monitoramento contínuo de perdas, fraudes e reputação.</p>
+          <div class="fproof"><span>KPIs &amp; MIS executivo</span><span>Tableau · Power BI</span><span>Monitoramento contínuo</span></div>
+          <div class="fproject"><span class="pj-tag">Projeto em destaque</span><p class="pj-txt"><b>Framework de monitoramento de perdas e contas suspeitas</b> — visibilidade de milhões em riscos evitados.</p></div>
+        </div>
+      </div>
+
+      <div class="frente reveal s">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1532186773960-85649e5cb70b?auto=format&amp;fit=crop&amp;q=80&amp;w=1600" alt="" loading="lazy"></div>
+        <div class="veil"></div>
+        <div class="fc">
+          <span class="fk">Frente 03</span>
+          <h3 class="ft">Eficiência Exponencial · RPA</h3>
+          <p class="fsub">Automatizando o presente.</p>
+          <p class="fdesc">Robôs que liberam o potencial humano para o estratégico: estruturei <b>RPAs integrados que consolidaram +6 sistemas antes isolados</b> em um único fluxo automatizado, com redução de custos e aumento de eficiência operacional.</p>
+          <div class="fproof"><span>+6 sistemas unificados</span><span>Python · APIs · OCR</span><span>Redução de custos</span></div>
+          <div class="fproject"><span class="pj-tag">Projeto em destaque</span><p class="pj-txt"><b>Hub de Laudos</b> — automação da coleta de evidências e geração padronizada: de horas para minutos, com 100% de rastreabilidade.</p></div>
+        </div>
+      </div>
+
+      <div class="frente reveal s">
+        <div class="ph"><img src="https://plus.unsplash.com/premium_photo-1683121710572-7723bd2e235d?auto=format&amp;fit=crop&amp;q=80&amp;w=1600" alt="" loading="lazy"></div>
+        <div class="veil"></div>
+        <div class="fc">
+          <span class="fk">Frente 04</span>
+          <h3 class="ft">Inteligência Preditiva &amp; IA Generativa</h3>
+          <p class="fsub">Antecipando o futuro.</p>
+          <p class="fdesc">Do preditivo ao generativo: implementei <b>modelagens preditivas e comportamentais</b> para decisão e automação inteligente, e hoje lidero o uso de IA na auditoria com <b>modelos locais (LLMs open-source, ex.: Llama via Ollama)</b> para uso interno seguro, sem dependência de nuvem externa.</p>
+          <div class="fproof"><span>Modelos em produção</span><span>LLMs locais (Llama/Ollama)</span><span>Análise comportamental</span></div>
+          <div class="fproject"><span class="pj-tag">Projeto em destaque</span><p class="pj-txt"><b>Front Unificado de atendimento</b> — integra Cartões, Consignado e Conta Corrente em uma só tela; redução de ~30% no TMA.</p></div>
+        </div>
+      </div>
+
+      <div class="frente reveal s">
+        <div class="ph"><img src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&amp;fit=crop&amp;q=80&amp;w=1600" alt="" loading="lazy"></div>
+        <div class="veil"></div>
+        <div class="fc">
+          <span class="fk">Frente 05</span>
+          <h3 class="ft">Governança, Risco &amp; Conformidade</h3>
+          <p class="fsub">Disrupção com controle.</p>
+          <p class="fdesc">Auditor de formação, entrego inovação sem abrir mão do controle: <b>COSO, CobIT e PLD-AML</b> na prática, análises de contas laranja e transações suspeitas com cruzamento de bases internas e APIs externas, e barreiras de segurança desenhadas desde a origem dos novos modelos.</p>
+          <div class="fproof"><span>COSO · CobIT</span><span>PLD-AML</span><span>Segurança desde a origem</span></div>
+          <div class="fproject"><span class="pj-tag">Projeto em destaque</span><p class="pj-txt"><b>Análise automatizada de PLD/CT (Lei 9.613)</b> na PwC — virou base para toda a carteira de clientes internos.</p></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider reveal"><div class="bar"><span class="dv-tick"></span><span class="dv-num">03</span><span class="dv-label">Competências aplicadas</span><span class="dv-line"></span></div></div>
+
+<section id="vaga" class="band">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">03</span><span class="sec-title">Competências, aplicadas</span>
+      <span class="sec-sub">Cada exigência de uma posição de liderança em Dados &amp; IA, respondida com prova — não com adjetivo.</span>
+    </div>
+    <div class="map-grid">
+      <div class="mcard reveal l"><span class="req">Migração e implementação de LLMs</span><p class="proof">Lidero hoje a implementação de ferramentas de IA e <b>modelos locais (LLMs open-source, ex. Llama via Ollama)</b>, somados ao ciclo completo de modelos preditivos em produção. Base técnica pronta para a transição ao core.</p></div>
+      <div class="mcard reveal r"><span class="req">Habilitador corporativo de negócio</span><p class="proof">Criei a infraestrutura de dados e indicadores de <b>7 áreas de negócio</b> e construí <b>ferramentas e CRMs</b> sob medida, descentralizando a capacidade analítica.</p></div>
+      <div class="mcard reveal l"><span class="req">Stakeholders de alta senioridade</span><p class="proof">Apoio direto à <b>superintendência e alta liderança</b> em governança, compliance e certificações; conduzi fóruns estratégicos com diretorias sobre dados e IA.</p></div>
+      <div class="mcard reveal r"><span class="req">Governança compartilhada com TI</span><p class="proof">Uni dados, auditoria, inspetoria e ouvidoria numa visão única; <b>COSO e CobIT</b>; segurança e conformidade desenhadas desde a origem.</p></div>
+      <div class="mcard reveal l"><span class="req">Estabilização e desenvolvimento do time</span><p class="proof">Estruturei áreas inteiras do zero e <b>mentorei 10+ profissionais</b> em dados, storytelling, automação e pensamento analítico. Construo e retenho talento.</p></div>
+      <div class="mcard reveal r"><span class="req">Conformidade em modelos preditivos</span><p class="proof">Criei <b>modelos preditivos e comportamentais</b> para risco e fraude com trilha de auditoria, somados a certificações em Prevenção a Fraude e Criptografia.</p></div>
+      <div class="mcard reveal l"><span class="req">ROI e métricas de performance</span><p class="proof">Transformei análises em retorno financeiro, <b>metrificando o ROI das ações</b>: R$ 8,1M e R$ 1,3M de saving, +R$ 2M identificados, ~R$ 40 bi/ano apurados.</p></div>
+      <div class="mcard reveal r"><span class="req">Base em São Paulo</span><p class="proof">Baseado em <b>São Paulo</b>, disponível para atuação presencial e imediata.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider reveal"><div class="bar"><span class="dv-tick"></span><span class="dv-num">04</span><span class="dv-label">Trajetória</span><span class="dv-line"></span></div></div>
+
+<section id="trajetoria">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">04</span><span class="sec-title">Trajetória</span>
+      <span class="sec-sub">Passe o mouse (ou toque) em cada etapa para ver a descrição completa do LinkedIn. Clique em "destaques" para resultados e stack.</span>
+    </div>
+    <div class="tl" id="timeline"></div>
+  </div>
+</section>
+
+<div class="divider reveal"><div class="bar"><span class="dv-tick"></span><span class="dv-num">05</span><span class="dv-label">Arsenal técnico</span><span class="dv-line"></span></div></div>
+
+<section id="arsenal">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="sec-num">05</span><span class="sec-title">Arsenal</span>
+      <span class="sec-sub">Profundidade técnica e executiva — raramente na mesma pessoa.</span>
+    </div>
+    <div class="ars-grid reveal">
+      <div class="ars"><h4>IA &amp; Machine Learning</h4><div class="tags"><span class="tag">IA Generativa</span><span class="tag">LLMs</span><span class="tag">Modelos Locais (Llama/Ollama)</span><span class="tag">Agentes</span><span class="tag">Modelagem Preditiva</span><span class="tag">Análise Comportamental</span><span class="tag">RPA Inteligente</span></div></div>
+      <div class="ars"><h4>Engenharia &amp; Dados</h4><div class="tags"><span class="tag">Data Lake</span><span class="tag">Pipelines</span><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">Databricks</span><span class="tag">Oracle</span><span class="tag">ACL / Galvanize</span></div></div>
+      <div class="ars"><h4>Cloud &amp; Ferramentas</h4><div class="tags"><span class="tag">AWS (Athena · S3 · Glue)</span><span class="tag">Tableau</span><span class="tag">Power BI</span><span class="tag">SAP (FI · GL)</span><span class="tag">VBA</span><span class="tag">CRMs sob medida</span></div></div>
+      <div class="ars"><h4>Governança &amp; Risco</h4><div class="tags"><span class="tag">COSO</span><span class="tag">CobIT</span><span class="tag">PLD-AML</span><span class="tag">Prevenção a Fraude</span><span class="tag">Segurança da Informação</span><span class="tag">Auditoria Contínua</span></div></div>
+      <div class="ars"><h4>Liderança</h4><div class="tags"><span class="tag">Estruturação de áreas</span><span class="tag">Times multidisciplinares</span><span class="tag">Mentoria (10+)</span><span class="tag">Fóruns executivos</span><span class="tag">Storytelling executivo</span></div></div>
+      <div class="ars"><h4>Domínio de negócio</h4><div class="tags"><span class="tag">Serviços Financeiros</span><span class="tag">Bancos &amp; Fintechs</span><span class="tag">Risco &amp; Fraude</span><span class="tag">Ouvidoria &amp; Reputação</span><span class="tag">Inteligência Estratégica</span></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider reveal"><div class="bar"><span class="dv-tick"></span><span class="dv-num">06</span><span class="dv-label">Formação</span><span class="dv-line"></span></div></div>
+
+<section id="formacao">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">06</span><span class="sec-title">Formação &amp; Certificações</span></div>
+    <div class="edu-grid reveal">
+      <div>
+        <h4>Formação</h4>
+        <div class="edu-item"><div class="t">Ciências Contábeis, Contabilidade &amp; Finanças</div><div class="s">Faculdades Oswaldo Cruz · 2015–2020</div></div>
+        <div class="edu-item"><div class="t">Ciência da Computação — Programação Geral</div><div class="s">Faculdade Integrada Ipiranga · 2014–2017</div></div>
+        <div class="edu-item"><div class="t">Data Science &amp; Machine Learning com Python</div><div class="s">Udemy · 2019</div></div>
+        <div class="edu-item"><div class="t">Tableau — Business Analytics</div><div class="s">Udemy · 2019</div></div>
+      </div>
+      <div>
+        <h4>Certificações</h4>
+        <div class="edu-item"><div class="t">Análise e Cultura de Dados</div></div>
+        <div class="edu-item"><div class="t">Prevenção a Fraude</div></div>
+        <div class="edu-item"><div class="t">Criptografia, Esteganografia e Criptoanálise</div></div>
+        <div class="edu-item"><div class="t">Investimentos</div></div>
+        <div class="edu-item"><div class="t">Responsabilidade Social Corporativa</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contato" class="closing">
+  <div class="wrap">
+    <p class="close-big reveal">O futuro de Dados &amp; IA não vai ser liderado por quem <span class="hl">chegou antes dele.</span></p>
+    <div class="cta reveal">
+      <a class="btn primary" href="mailto:pedropaulouzuaki@gmail.com">Conversar comigo →</a>
+      <a class="btn ghost" href="https://www.linkedin.com/in/paulonavegantes-7618a1109" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn ghost" href="tel:+5511944958714">+55 11 94495-8714</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>PAULO NAVEGANTES · DADOS &amp; IA · SÃO PAULO · 2026</span>
+  <button class="lk" data-modal="fontes">Fontes &amp; Disclaimer</button>
+</footer>
+
+<!-- MODAL -->
+<div class="ov" id="ov">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="x" id="mx" aria-label="Fechar">&times;</button>
+    <div id="mc"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  /* ============ DADOS DE TRAJETÓRIA (texto original do LinkedIn/CV) ============ */
+  var ROLES=[
+    {key:"paguemenos",when:"2026 · PRESENTE",org:"Farmácias Pague Menos",role:"Gerente de Auditoria Interna e Dados",
+      desc:"Estruturo a vertical de Dados &amp; IA da auditoria e <strong>lidero o uso de IA na área</strong> — implementando múltiplas ferramentas com IA e desenvolvendo <strong>modelos locais (LLMs open-source)</strong> para uso interno seguro.",
+      full:["Piloto estratégias que unem <b>eficiência analítica e inovação digital</b> na auditoria interna.","<b>Lidero o uso de IA na área</b>, implementando múltiplas ferramentas baseadas em inteligência artificial para ampliar a profundidade e a cobertura analítica.","Desenvolvo <b>modelos locais com LLMs open-source</b> (ex.: Llama via Ollama) para uso interno seguro, sem dependência de nuvem externa.","Estruturo a vertical de Dados &amp; IA com um <b>mapa de dados pioneiro</b> na companhia.","Atuação <b>hands-on de ponta a ponta</b>: do prompt à infraestrutura."],
+      stack:["LLMs locais","Ollama","Python","Governança de dados"],
+      disc:"Gerente de Auditoria Interna e Dados (mar/2026 – presente)."},
+
+    {key:"wfrad",when:"2024 · PRESENTE",org:"Wfrad",role:"Cofundador &amp; Conselho de Inovação",
+      desc:"Assento de inovação e visão de produto em tecnologia — direção estratégica para novos modelos digitais.",
+      full:["<b>Cofundador e membro do conselho de inovação</b>, com assento em decisões de produto e tecnologia.","Direção estratégica para novos modelos digitais e visão de produto."],
+      stack:["Estratégia de produto","Inovação"],
+      disc:"Cofounder &amp; Innovation Board Member (ago/2024 – presente)."},
+
+    {key:"daycoval",when:"2025 · 2026",org:"Banco Daycoval",role:"Coordenador de Data Analytics, IA, RPA, MIS &amp; Inteligência Estratégica",
+      desc:"Instrumentalizei <strong>7 áreas de negócio</strong> com infraestrutura completa de dados, estruturei o <strong>Data Lake (+100 bases)</strong> e entreguei <strong>+70 projetos</strong> — com reconhecimento em toda a companhia.",
+      full:["Coordenar e estruturar a área de <b>Data Analytics, IA e RPA</b>, liderando o ciclo de vida completo de desenvolvimento de modelos e automações inteligentes em produção para mitigação de riscos e fraudes.","Gestor de um <b>time multidisciplinar</b>, conduzindo frentes de dados, IA e automação com foco em entrega de valor e excelência técnica.","Liderança técnica em <b>nível institucional</b>, apoiando diversas áreas do banco em governança de dados, automação e inteligência analítica.","<b>Mentor de carreira de +10 profissionais</b>, desenvolvendo competências em dados, storytelling, automação e pensamento analítico.","Liderar a estruturação do <b>Data Lake analítico</b>, consolidando <b>+100 bancos de dados</b> e milhares de tabelas categorizadas por produto, operação e finalidade.","Desenvolver <b>KPIs, MIS e painéis executivos em Tableau</b> e automações em Python e SQL, com foco em monitoramento contínuo, prevenção a fraudes e análises reputacionais.","Conduzir as frentes de <b>IA e RPA</b> dentro da área de dados, ampliando a capacidade analítica e operacional do banco.","Implementar IA para decisão e automação inteligente, com <b>modelagens preditivas, comportamentais e análise de padrões</b>.","Estruturar <b>RPAs integrados</b>, consolidando em um único fluxo automatizado <b>+6 sistemas antes isolados</b>.","Apoiar a superintendência e a alta liderança em governança, compliance, eficiência operacional e certificações regulatórias.","Estruturar análises de <b>contas laranja, transações suspeitas e falhas regulatórias</b>, com cruzamento de bases internas e APIs externas.","Mapear e otimizar processos de <b>ouvidoria, atendimento e relacionamento com o cliente</b>, conectando dados a eventos críticos da jornada."],
+      results:["Estruturação do <b>primeiro Data Lake analítico</b> do banco, com visão transversal por produto.","Framework de monitoramento de perdas e contas suspeitas, gerando visibilidade de <b>milhões em riscos evitados</b>.","KPIs e painéis executivos <b>adotados pela superintendência</b> e áreas de risco/compliance como base de decisão.","Aproximação entre dados, auditoria e ouvidoria, com ganho institucional e reputacional."],
+      areas:["Prevenção a Fraudes","Inspetoria","Ouvidoria Reputacional &amp; Regulatória","Melhoria Contínua","Qualidade","Controles Internos","Auditoria Interna"],
+      stack:["Python","SQL","Tableau","RPA","Modelos preditivos","Data Lake","APIs"],
+      disc:"Consolida as atuações como Coordenador no Banco Daycoval (fev/2025 – mar/2026)."},
+
+    {key:"edenred",when:"2021 · 2025",org:"Edenred",role:"Auditor Especialista em Data Analytics · Digital Accelerator · Inovação",
+      desc:"Criei o <strong>Audit Machine</strong> (Auditoria Contínua), gerando <span class='rs'>R$ 1,3M</span> de saving em antecipação de recebíveis e <span class='rs'>R$ 8,1M</span> em faturamento.",
+      full:["Coordenar projetos de <b>Auditoria Contínua / Transformação Digital</b> da companhia nas áreas impactadas.","Desenvolver e definir o <b>plano anual de auditoria</b> e liderar auditorias investigativas.","Liderar a <b>implantação da infraestrutura de auditoria interna</b>.","Desenvolver e manter políticas, procedimentos e manuais de auditoria, com atenção especial às exigências de órgãos regulatórios.","Conduzir monitoramento de atividades com metodologia e ferramentas apropriadas conforme os riscos identificados.","Avaliar se as atividades de negócio são conduzidas dentro das regras corporativas e se os processos vigentes são efetivos.","Assegurar a aderência das atividades ao <b>arcabouço regulatório aplicável</b> e desenvolver análise independente, objetiva e baseada em risco.","Orientar responsáveis das unidades de negócio e recomendar melhorias em processos e controles."],
+      results:["Criação e implementação do <b>Audit Machine</b> (Auditoria Contínua) na antecipação de recebíveis.","<b>Saving de R$ 1,3M</b> e faturamento com saving de <b>R$ 8,1M</b>, com identificação e mitigação de riscos significativos.","Cumprimento do plano de auditoria, assegurando aderência à legislação dos órgãos regulatórios."],
+      stack:["ACL","Python","SQL","Auditoria Contínua","Antecipação de recebíveis"],
+      disc:"Auditor Especialista em Data Analytics (nov/2021 – fev/2025)."},
+
+    {key:"b3",when:"2020 · 2021",org:"B3",role:"Auditor Sênior — Data Analytics",
+      desc:"Digitalizei a auditoria interna por identidade digital e criei automações em ACL, Python e SQL. <span class='rs'>+R$ 2M</span> em distorções financeiras identificadas.",
+      full:["Responsável pela iniciativa de <b>digitalizar a auditoria interna</b> por meio de identidade digital.","Melhoria, automatização e criação de auditorias mais abrangentes e oportunas.","Desenvolvimento de <b>indicadores volumétricos correlacionados</b> com inteligência de dados e Analytics.","Disseminação de conhecimento e liderança sobre o tema digital dentro da auditoria.","Criação de <b>automações de auditorias tradicionais</b> com ACL, Python e SQL.","Criação de <b>auditoria de SAP</b> para os módulos FI e GL.","Criação e publicação do <b>manual de auditoria contínua</b> e do manual de estruturação em dados para a Auditoria Interna."],
+      results:["Implementação do <b>Confluence da Auditoria Interna</b>.","<b>+R$ 2M identificados</b> em distorções financeiras por Data Analytics da iniciativa digital."],
+      stack:["ACL","Python","SQL","SAP (FI · GL)","Confluence"],
+      disc:"Auditor Sênior Data Analytics (jul/2020 – dez/2021)."},
+
+    {key:"quality",when:"2019 · 2020",org:"Quality S.A.",role:"Consultor Desenvolvedor — ACL Galvanize",
+      desc:"Automações e conciliações que <strong>validaram 100% das transações</strong> analisadas. Automações financeiras apurando <span class='rs'>~R$ 40 bi/ano</span>.",
+      full:["Projetos de <b>automação e melhorias com ACL Data Analytics</b>: entender operações e fluxos, mapear riscos e criar automações de garantia.","Criação e melhoria de processos em <b>Tesouraria e Controladoria</b>, com KPIs, Data Analytics e dashboards conforme os stakeholders.","Auditoria interna mais tempestiva e abrangente em <b>PLD-AML, investigação e análises financeiras</b> de operações sensíveis.","Consultoria e mentoria em <b>Riscos Financeiros e Prevenção a Atos Ilícitos</b>, com testes de efetividade baseados em dados (ACL, Databricks, SQL, Oracle) — <b>validando 100% das transações analisadas</b>.","Conciliações automatizadas para contabilidade e tributário em pagamentos, bancos e fintechs.","Implementação do <b>AX – ACL Native Server</b> em Oracle, SAP, SQL, Databricks e AWS.","Dashboards em Tableau, Power BI, Excel e Python; análises complexas em SQL e Python.","Apoio a negócios e TI na implementação de <b>COSO e CobIT</b>."],
+      results:["Automatizações financeiras responsáveis por apurar <b>~R$ 40 bilhões/ano</b>."],
+      stack:["ACL / Galvanize","Databricks","SQL","Oracle","AWS","Tableau","Power BI"],
+      disc:"Consultor Desenvolvedor ACL Galvanize (ago/2019 – jul/2020)."},
+
+    {key:"pwc",when:"2018 · 2019",org:"PwC Brasil",role:"Risk Assurance — Data &amp; Analytics (Associate PL)",
+      desc:"Conduzi sozinho um grande projeto de PDD e Depreciação que virou <strong>case de treinamento da PwC Brasil em 2019</strong>.",
+      full:["Consultor de Data Analytics em <b>Risk Assurance</b>, com projetos para grandes corporações e melhorias internas contínuas.","Apoio aos times de auditoria de campo na análise de dados e apuração de lançamentos contábeis para os demonstrativos financeiros.","Criação da <b>análise automatizada de PLD/CT (Lei 9.613)</b> para todos os clientes internos da PwC Brasil, gerando grandes retornos.","Melhorias internas: automações e visualização de dados para eliminar trabalho manual e erros humanos.","Auditoria externa de <b>PDD–PCLD</b> e auditoria interna de Depreciação acumulada.","Dashboards para apresentação de negócios a bancos clientes; auditoria de <b>FIDIC e fundos via terminal Bloomberg</b>."],
+      results:["Condução individual de grande projeto de <b>PDD e Depreciação</b> que virou case de treinamento da PwC Brasil em 2019.","Automatização via ACL que garante a <b>identificação de sonegação de impostos</b> para toda a base de clientes."],
+      stack:["ACL","SQL","Bloomberg","PLD/CT","Dashboards"],
+      disc:"Risk Assurance Data &amp; Analytics Associate PL (ago/2018 – ago/2019)."},
+
+    {key:"celpa",when:"2017 · 2018",org:"Celpa · Equatorial Energia",role:"Estagiário — Gestão Contábil &amp; Fiscal",
+      desc:"Automações em VBA e scripts ACL no suporte à contabilidade e conformidade tributária, otimizando etapas críticas e reduzindo falhas.",
+      full:["Cálculo do <b>ICMS</b> sobre o faturamento e geração de relatórios gerenciais com análise gráfica.","Melhorias nos sistemas <b>SAP Financeiro e SAP Comercial</b>.","Cruzamento de grandes volumes de dados em <b>ACL Analytics</b> para detecção de inconsistências.","Automações em <b>VBA e scripts ACL</b>, otimizando etapas críticas e reduzindo falhas operacionais."],
+      results:["Portfólio de Contas a Receber com <b>+300 milhões de linhas</b> analisadas (ACL Audit), conforme regulamentações da ANEEL.","Criação do <b>layout CONV115/03 – CONFAZ</b>, com mais velocidade na conferência e melhores controles internos."],
+      stack:["ACL Audit","VBA","SAP","Excel"],
+      disc:"Estágio em Gestão Contábil e Fiscal (mar/2017 – jul/2018)."},
+
+    {key:"hsc",when:"2016 · 2017",org:"HSC Contabilidade",role:"Assistente Contábil",
+      desc:"Elaboração e análise de demonstrações contábeis, indicadores financeiros e integração de sistemas contábil-fiscais.",
+      full:["Emissão e análise técnica de <b>DRE, Balanço Patrimonial, DFC</b> e relatórios gerenciais.","Cálculo e interpretação de <b>indicadores financeiros</b> (liquidez, endividamento, rentabilidade).","Emissão de NF-e e atendimento a obrigações acessórias."],
+      results:["Integração automatizada entre <b>TRON Fiscal e TRON Contábil</b>, reduzindo retrabalho.","Layout padronizado de demonstrações financeiras para <b>bancos e investidores</b> em licitações e análise de crédito."],
+      stack:["TRON","Excel","Análise contábil"],
+      disc:"Assistente Contábil (mar/2016 – mar/2017)."}
+  ];
+
+  /* ---- render timeline ---- */
+  var tl=document.getElementById('timeline');
+  ROLES.forEach(function(r){
+    var fullHtml='<div class="tl-full"><div class="ff-head">Descrição completa · LinkedIn</div><div class="ff-body"><ul>'+
+      r.full.map(function(i){return '<li>'+i+'</li>'}).join('')+'</ul>';
+    if(r.results){fullHtml+='<div class="res"><div class="rh">Principais resultados</div><ul>'+r.results.map(function(i){return '<li>'+i+'</li>'}).join('')+'</ul></div>';}
+    fullHtml+='</div></div>';
+    var moreBtn=(r.results||r.stack)?'<button class="tl-more" data-modal="'+r.key+'"><span class="pl">+</span> Destaques &amp; stack</button>':'';
+    var el=document.createElement('div');
+    el.className='tl-item reveal';
+    el.innerHTML='<div class="tl-card"><div class="tl-when">'+r.when+'</div><div class="tl-org">'+r.org+'</div>'+
+      '<div class="tl-role">'+r.role+'</div><p class="tl-desc">'+r.desc+'</p>'+
+      '<span class="tl-hint"><span class="ic">▸</span> Texto completo do LinkedIn</span>'+fullHtml+'</div>'+moreBtn;
+    // tap-to-toggle (mobile + accessibility)
+    el.querySelector('.tl-card').addEventListener('click',function(ev){
+      if(ev.target.closest('a')||ev.target.closest('[data-modal]')) return;
+      el.classList.toggle('open');
+    });
+    tl.appendChild(el);
+  });
+
+  /* ============ MODAIS (destaques curados) ============ */
+  var MODALS={};
+  ROLES.forEach(function(r){
+    if(r.results||r.stack){
+      MODALS[r.key]={tag:r.when,title:r.org,sub:r.role,items:r.results||r.full,areas:r.areas,stack:r.stack,disc:r.disc};
+    }
+  });
+  MODALS.fontes={tag:"Transparência",title:"Fontes &amp; Disclaimer",items:[
+    "Todos os números deste portfólio referem-se a entregas e resultados <b>reais</b> de trabalhos que conduzi nas empresas citadas.",
+    "Valores financeiros (savings, volumes apurados, distorções identificadas) refletem os resultados das respectivas iniciativas em suas empresas de origem.",
+    "Na frente de LLMs no core bancário, posiciono-me como quem possui <b>a base técnica e a experiência de modelos em produção</b> para liderar a transição.",
+    "Métricas, nomes de áreas e descrições completas podem ser detalhados e comprovados em entrevista."
+  ],disc:"Documento de candidatura · Paulo Navegantes · 2026."};
+
+  var ov=document.getElementById('ov'),mc=document.getElementById('mc'),mx=document.getElementById('mx');
+  function openModal(key){
+    var d=MODALS[key]; if(!d) return;
+    var html='<span class="m-tag">'+d.tag+'</span><h3>'+d.title+'</h3>';
+    if(d.sub){html+='<div class="m-sub">'+d.sub+'</div>';}
+    if(d.areas){html+='<div class="m-sec">Áreas instrumentalizadas</div><div class="areas">'+d.areas.map(function(a){return '<span>'+a+'</span>'}).join('')+'</div>';}
+    html+='<div class="m-sec">'+(d.title==='Fontes &amp; Disclaimer'?'Notas':'Destaques &amp; resultados')+'</div><ul>'+d.items.map(function(i){return '<li>'+i+'</li>'}).join('')+'</ul>';
+    if(d.stack){html+='<div class="m-sec">Stack &amp; ferramentas</div><div class="m-stack">'+d.stack.map(function(s){return '<span>'+s+'</span>'}).join('')+'</div>';}
+    html+='<div class="disc">'+d.disc+'</div>';
+    mc.innerHTML=html; ov.classList.add('open'); document.body.style.overflow='hidden';
+  }
+  function closeModal(){ov.classList.remove('open');document.body.style.overflow='';}
+  document.addEventListener('click',function(e){var b=e.target.closest('[data-modal]');if(b){e.stopPropagation();openModal(b.dataset.modal);}});
+  mx.addEventListener('click',closeModal);
+  ov.addEventListener('click',function(e){if(e.target===ov)closeModal()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeModal()});
+
+  /* ============ REVEAL ON SCROLL ============ */
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}})},{threshold:.12});
+  document.querySelectorAll('.reveal,.divider,.pull').forEach(function(el){io.observe(el);});
+  window.addEventListener('load',function(){document.querySelectorAll('header .reveal').forEach(function(el,i){el.style.transitionDelay=(i*0.09)+'s';el.classList.add('in');});});
+
+  /* ============ COUNT-UP ============ */
+  function fmt(n,dec){return n.toLocaleString('pt-BR',{minimumFractionDigits:dec,maximumFractionDigits:dec});}
+  function run(el){
+    var t=parseFloat(el.dataset.target),dec=parseInt(el.dataset.dec||"0",10),pre=el.dataset.prefix||"",suf=el.dataset.suffix||"",dur=1500,st=performance.now();
+    function step(now){var p=Math.min((now-st)/dur,1),e=1-Math.pow(1-p,3);el.textContent=pre+fmt(t*e,dec)+suf;if(p<1)requestAnimationFrame(step);else el.textContent=pre+fmt(t,dec)+suf;}
+    requestAnimationFrame(step);
+  }
+  var cio=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){run(e.target);cio.unobserve(e.target);}})},{threshold:.5});
+  document.querySelectorAll('.count').forEach(function(el){cio.observe(el)});
+
+  /* ============ SCROLL PROGRESS + PARALLAX ============ */
+  var progress=document.getElementById('progress');
+  var frentePhotos=Array.prototype.slice.call(document.querySelectorAll('.frente .ph img'));
+  function onScroll(){
+    var h=document.documentElement,sc=h.scrollTop||document.body.scrollTop,max=(h.scrollHeight-h.clientHeight)||1;
+    progress.style.width=(sc/max*100)+'%';
+    var vh=window.innerHeight;
+    frentePhotos.forEach(function(img){
+      var rect=img.parentElement.getBoundingClientRect();
+      if(rect.bottom>0&&rect.top<vh){
+        var prog=(rect.top+rect.height/2-vh/2)/vh; // -0.5..0.5 approx
+        img.style.transform='translateY('+(-6+prog*-7)+'%)';
+      }
+    });
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll);
+  onScroll();
+})();
+</script>
+</body>
+</html>
